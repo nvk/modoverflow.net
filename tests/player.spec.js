@@ -161,6 +161,20 @@ test('release catalog loads and plays its packaged audio', async ({ page }, test
   expect(response.ok()).toBe(true);
   const [track] = await response.json();
   expect(track).toBeTruthy();
+  const media = await page.request.get(track.src);
+  expect(media.ok()).toBe(true);
+  const bytes = await media.body();
+  // Python's preview server lacks byte ranges. Serve the actual packaged bytes
+  // with the range semantics used by GitHub Pages so MP3 seeking is testable.
+  await page.route('**/music/*.mp3', (route) => {
+    const range = /^bytes=(\d+)-(\d*)$/.exec(route.request().headers().range || '');
+    const headers = { 'accept-ranges': 'bytes', 'content-type': 'audio/mpeg' };
+    if (!range) return route.fulfill({ status: 200, headers, body: bytes });
+    const start = Number(range[1]);
+    const end = Math.min(range[2] ? Number(range[2]) : bytes.length - 1, bytes.length - 1);
+    if (start > end) return route.fulfill({ status: 416, headers: { ...headers, 'content-range': `bytes */${bytes.length}` } });
+    return route.fulfill({ status: 206, headers: { ...headers, 'content-range': `bytes ${start}-${end}/${bytes.length}` }, body: bytes.subarray(start, end + 1) });
+  });
   await page.goto('/');
   await expect(page.locator('#empty-queue')).toBeHidden();
   await expect(page.locator('#track-title')).toHaveText(track.title);
