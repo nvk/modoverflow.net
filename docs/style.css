@@ -579,35 +579,6 @@ svg {
   color:var(--muted);
   margin-top:18px;
 }
-.signoff {
-  padding:65px 4%;
-  position:relative;
-  border-top:1px solid var(--line);
-}
-.signoff p {
-  font:800 clamp(58px,10vw,150px)/.92 var(--display);
-  letter-spacing:-.015em;
-  margin:26px 0 0;
-}
-.signoff p span {
-  color:var(--acid);
-}
-.signoff>a {
-  position:absolute;
-  right:4%;
-  bottom:66px;
-  font:40px Arial,sans-serif;
-  border:1px solid var(--line);
-  width:64px;
-  height:64px;
-  display:grid;
-  place-items:center;
-  border-radius:50%;
-}
-.signoff>a:hover {
-  background:var(--acid);
-  color:var(--bg);
-}
 footer {
   border-top:1px solid var(--line);
   margin:0 4%;
@@ -628,7 +599,7 @@ footer {
   animation-play-state:paused;
 }
 @media(min-width:1600px) {
-  .hero,.site-header,footer,.signoff {
+  .hero,.site-header,footer {
     padding-left:max(4%,calc((100vw - 1600px)/2));
     padding-right:max(4%,calc((100vw - 1600px)/2));
   }
@@ -682,9 +653,6 @@ footer {
   }
   .icon-button {
     width:30px;
-  }
-  .signoff {
-    padding:55px 5%;
   }
 }
 @media(max-width:620px) {
@@ -815,20 +783,6 @@ footer {
   .empty-queue p {
     font-size:12px;
     line-height:1.6;
-  }
-  .signoff {
-    padding:42px 5% 45px;
-  }
-  .signoff p {
-    font-size:13.5vw;
-    margin-top:22px;
-  }
-  .signoff>a {
-    width:40px;
-    height:40px;
-    font-size:26px;
-    right:5%;
-    bottom:47px;
   }
   footer {
     margin:0 5%;
