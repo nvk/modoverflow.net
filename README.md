@@ -17,13 +17,15 @@ reacts to the playing audio. There are no analytics, third-party scripts, or upl
   {
     "title": "Your track title",
     "src": "music/your-track.mp3",
+    "artwork": "music/your-cover.jpg",
     "detail": "Release name · 2026",
     "duration": 237
   }
 ]
 ```
 
-`title` and `src` are required. `detail` and `duration` (seconds) are optional.
+`title` and `src` are required. `detail`, `duration` (seconds), and `artwork` are optional.
+Square artwork appears in the player and supported system media controls.
 The player reads the actual duration when a track loads. Commit and push to
 `master` to publish. Only add recordings intended for public release.
 

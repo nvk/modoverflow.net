@@ -128,6 +128,15 @@ function selectTrack(index, autoplay = false) {
   showError();
   $('track-title').textContent = track.title;
   $('track-detail').textContent = track.local ? 'Local file' : track.detail || '';
+  const artwork = $('track-artwork');
+  artwork.hidden = !track.artwork;
+  artwork.parentElement.classList.toggle('has-artwork', Boolean(track.artwork));
+  artwork.onerror = () => {
+    artwork.hidden = true;
+    artwork.parentElement.classList.remove('has-artwork');
+  };
+  if (track.artwork) artwork.src = track.artwork;
+  else artwork.removeAttribute('src');
   $('player-state').textContent = 'READY TO PLAY';
   $('play').disabled = false;
   $('repeat').disabled = false;
@@ -138,7 +147,7 @@ function selectTrack(index, autoplay = false) {
   updatePosition();
   syncPlayback();
   if ('mediaSession' in navigator && 'MediaMetadata' in window) {
-    navigator.mediaSession.metadata = new MediaMetadata({ title: track.title, artist: track.local ? '' : 'MODOVERFLOW' });
+    navigator.mediaSession.metadata = new MediaMetadata({ title: track.title, artist: track.local ? '' : 'modoverflow.net', artwork: track.artwork ? [{ src: track.artwork }] : [] });
   }
   announce(`${track.title} selected`);
   if (autoplay) playCurrent();
@@ -283,7 +292,14 @@ async function loadCatalog() {
       if (!track || typeof track.title !== 'string' || !track.title.trim() || typeof track.src !== 'string' || !track.src.trim()) throw new Error('Invalid track');
       const url = new URL(track.src, document.baseURI);
       if (!['https:', 'http:'].includes(url.protocol)) throw new Error('Unsupported audio URL');
-      return { title: track.title, src: url.href, detail: typeof track.detail === 'string' ? track.detail : '', duration: typeof track.duration === 'number' ? track.duration : undefined };
+      let artwork;
+      if (typeof track.artwork === 'string' && track.artwork.trim()) {
+        try {
+          const imageURL = new URL(track.artwork, document.baseURI);
+          if (['https:', 'http:'].includes(imageURL.protocol)) artwork = imageURL.href;
+        } catch { /* Optional artwork must not prevent audio playback. */ }
+      }
+      return { title: track.title, src: url.href, artwork, detail: typeof track.detail === 'string' ? track.detail : '', duration: typeof track.duration === 'number' ? track.duration : undefined };
     });
     queue.push(...validated);
     renderQueue();

@@ -178,6 +178,8 @@ test('release catalog loads and plays its packaged audio', async ({ page }, test
   await page.goto('/');
   await expect(page.locator('#empty-queue')).toBeHidden();
   await expect(page.locator('#track-title')).toHaveText(track.title);
+  await expect(page.locator('#track-artwork')).toBeVisible();
+  await expect.poll(() => page.locator('#track-artwork').evaluate((image) => image.naturalWidth)).toBeGreaterThan(0);
   await expect(page.locator('#queue-note')).toBeHidden();
   await expect.poll(() => page.locator('#audio').evaluate((audio) => audio.duration)).toBeGreaterThan(0);
   const duration = await page.locator('#audio').evaluate((audio) => audio.duration);
@@ -199,4 +201,7 @@ test('release catalog loads and plays its packaged audio', async ({ page }, test
   await page.setViewportSize({ width: 320, height: 740 });
   await assertNoOverflow(page);
   expect(errors).toEqual([]);
+  await localTracks(page);
+  await expect(page.locator('#track-artwork')).toBeHidden();
+  await expect(page.locator('.record')).toBeVisible();
 });
