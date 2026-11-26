@@ -23,31 +23,27 @@
   <header class="site-header">
     <a class="wordmark" href="#top" aria-label="Modoverflow home">
       <img src="assets/icon.svg" width="29" height="29" alt="">
-      <span>MODOVERFLOW</span>
     </a>
     <nav aria-label="Main navigation"><a href="#listen">Listen <span aria-hidden="true">↗</span></a></nav>
   </header>
 
   <main>
     <section class="hero" id="top" aria-labelledby="artist-name">
-      <div class="hero-topline"><span>Sound beyond the edges.</span><span class="coordinate" aria-hidden="true">MØ / ∞</span></div>
       <h1 id="artist-name">MODOVERFLOW<span class="period">.</span></h1>
       <div class="signal-stage">
         <canvas id="signal" aria-hidden="true"></canvas>
-        <div class="stage-annotation annotation-left" aria-hidden="true"><span>01—∞</span><span>CONTINUOUS<br>EXPERIMENT</span></div>
-        <div class="stage-annotation annotation-right" aria-hidden="true"><span class="crosshair">+</span><span>TURN IT UP.<br>GET LOST.</span></div>
         <button id="motion" class="motion-control" type="button" aria-pressed="false">Pause motion <span aria-hidden="true">Ⅱ</span></button>
       </div>
       <div class="hero-bottom">
         <p>OUT OF THE LOOP.<br><span>INTO THE SOUND.</span></p>
-        <a class="listen-link" href="#listen"><span>Find your frequency</span><span class="arrow" aria-hidden="true">↘</span></a>
+        <a class="listen-link" href="#listen"><span>Listen</span><span class="arrow" aria-hidden="true">↘</span></a>
       </div>
     </section>
 
     <section class="listening-room" id="listen" aria-labelledby="listen-title">
-      <div class="section-heading"><div><span class="eyebrow">THE LISTENING ROOM</span><h2 id="listen-title">Press play.<br>Stay a while.</h2></div><span class="section-number" aria-hidden="true">[ 01 ]</span></div>
+      <div class="section-heading"><h2 id="listen-title">Press play.<br>Stay a while.</h2></div>
       <div class="deck">
-        <div class="deck-art" aria-hidden="true"><div class="record"><div class="record-label"><span>MØ</span><span>MODOVERFLOW<br>33⅓ / ∞</span></div></div><span class="sleeve-code">MØ—001</span></div>
+        <div class="deck-art" aria-hidden="true"><div class="record"><div class="record-label"><span>MØ</span></div></div></div>
         <div class="player">
           <div class="player-topline"><span id="player-state" class="eyebrow">STANDBY</span><span class="signal-dot" aria-hidden="true"></span></div>
           <h3 id="track-title">First transmission<br>coming soon.</h3>
@@ -67,17 +63,16 @@
         </div>
       </div>
 
-      <div class="queue-heading"><h3>On rotation <span id="track-count">00</span></h3><button id="open-files" class="text-button" type="button">Open an audio file <span aria-hidden="true">↗</span></button><input id="file-input" type="file" accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg,.flac,.opus" multiple hidden></div>
+      <div class="queue-heading"><h3>Tracks <span id="track-count">00</span></h3><button id="open-files" class="text-button" type="button">Open audio <span aria-hidden="true">↗</span></button><input id="file-input" type="file" accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg,.flac,.opus" multiple hidden></div>
       <ol id="queue" class="track-list" aria-label="Track list"></ol>
-      <div id="empty-queue" class="empty-queue"><span class="empty-mark" aria-hidden="true">↳</span><p>Try the player with your own audio.<span>It stays on your device.</span></p></div>
-      <p id="queue-note" class="queue-note" hidden>Local listening session · files stay on your device.</p>
-      <p class="keyboard-hint">SPACE <span>play / pause</span><i>·</i> ← → <span>seek</span><i>·</i> M <span>mute</span></p>
+      <div id="empty-queue" class="empty-queue"><p>Your audio stays on this device.</p></div>
+      <p id="queue-note" class="queue-note" hidden>Your audio stays on this device.</p>
       <p id="announcement" class="sr-only" role="status" aria-live="polite"></p>
       <noscript><p class="player-error">Enable JavaScript to use the player. Music will appear here when it is released.</p></noscript>
       <audio id="audio" preload="metadata"></audio>
     </section>
-    <section class="signoff" aria-label="Artist statement"><span class="eyebrow">MODOVERFLOW</span><p>MAKE NOISE.<br><span>LEAVE A TRACE.</span></p><a href="#top" aria-label="Back to top">↑</a></section>
+    <section class="signoff" aria-label="Artist statement"><p>MAKE NOISE.<br><span>LEAVE A TRACE.</span></p><a href="#top" aria-label="Back to top">↑</a></section>
   </main>
-  <footer><span>© <span id="year">2026</span> MODOVERFLOW</span><span>INDEPENDENT SIGNAL. ALWAYS.</span><a href="#listen">BACK TO THE MUSIC ↗</a></footer>
+  <footer><span>© <span id="year">2026</span> MODOVERFLOW</span></footer>
 </body>
 </html>

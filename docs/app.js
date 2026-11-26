@@ -65,7 +65,7 @@ function renderQueue() {
     title.textContent = track.title;
     const detail = document.createElement('span');
     detail.className = 'track-meta';
-    detail.textContent = track.local ? 'LOCAL FILE' : track.detail || 'MODOVERFLOW';
+    detail.textContent = track.local ? 'Local file' : track.detail || '';
     description.append(title, detail);
     const duration = document.createElement('span');
     duration.className = 'track-time';
@@ -127,7 +127,7 @@ function selectTrack(index, autoplay = false) {
   const track = queue[index];
   showError();
   $('track-title').textContent = track.title;
-  $('track-detail').textContent = track.local ? 'Local file · only on this device' : track.detail || 'MODOVERFLOW';
+  $('track-detail').textContent = track.local ? 'Local file' : track.detail || '';
   $('player-state').textContent = 'READY TO PLAY';
   $('play').disabled = false;
   $('repeat').disabled = false;

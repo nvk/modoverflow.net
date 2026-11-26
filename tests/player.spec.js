@@ -43,7 +43,7 @@ test('empty release state, local assets, desktop composition', async ({ page }, 
   await assertNoOverflow(page);
   await page.screenshot({ path: testInfo.outputPath('desktop.png'), fullPage: true });
   await page.setViewportSize({ width: 1200, height: 630 });
-  await page.addStyleTag({ content: '.site-header,.hero-bottom,.motion-control{display:none}.hero{padding-top:40px}.signal-stage{height:390px;margin-top:8px}.stage-annotation{top:70px}' });
+  await page.addStyleTag({ content: '.site-header,.hero-bottom,.motion-control{display:none}.hero{padding-top:40px}.signal-stage{height:350px;margin-top:8px}' });
   await page.screenshot({ path: testInfo.outputPath('social.png') });
   expect(errors).toEqual([]);
   expect(external).toEqual([]);
