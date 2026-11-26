@@ -15,6 +15,9 @@ function wav(seconds = 30) {
 }
 const tone = wav();
 const file = (name) => ({ name, mimeType: 'audio/wav', buffer: tone });
+async function emptyCatalog(page) {
+  await page.route('**/tracks.json', (route) => route.fulfill({ json: [] }));
+}
 async function localTracks(page) {
   await page.locator('#file-input').setInputFiles([file('Night_signal.wav'), file('After_hours.wav')]);
   await expect(page.locator('#duration')).toHaveText('0:30');
@@ -34,6 +37,7 @@ test('empty release state, local assets, desktop composition', async ({ page }, 
   const errors = [], external = [];
   page.on('pageerror', (error) => errors.push(error.message));
   page.on('request', (request) => { if (!request.url().startsWith('http://127.0.0.1:4173/')) external.push(request.url()); });
+  await emptyCatalog(page);
   await page.goto('/');
   await expect(page.locator('#empty-queue')).toBeVisible();
   await expect(page.locator('#play')).toBeDisabled();
@@ -50,6 +54,7 @@ test('empty release state, local assets, desktop composition', async ({ page }, 
 });
 
 test('local audio: play, pause, seek, volume, mute, repeat, queue and keyboard', async ({ page }) => {
+  await emptyCatalog(page);
   await page.goto('/');
   await localTracks(page);
   await expect(page.locator('#track-count')).toHaveText('02');
@@ -125,6 +130,7 @@ test('catalog failure and invalid local files remain recoverable', async ({ page
 
 test('mobile layout and player at 390px and 320px', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 390, height: 844 });
+  await emptyCatalog(page);
   await page.goto('/');
   await page.evaluate(() => document.fonts.ready);
   await page.getByRole('button', { name: 'Pause motion' }).click();
@@ -145,4 +151,38 @@ test('reduced motion starts still and permits explicit opt-in', async ({ page })
   await expect(page.locator('#motion')).toContainText('Resume motion');
   await page.locator('#motion').click();
   await expect(page.locator('#motion')).toHaveAttribute('aria-pressed', 'false');
+});
+
+
+test('release catalog loads and plays its packaged audio', async ({ page }, testInfo) => {
+  const errors = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+  const response = await page.request.get('/tracks.json');
+  expect(response.ok()).toBe(true);
+  const [track] = await response.json();
+  expect(track).toBeTruthy();
+  await page.goto('/');
+  await expect(page.locator('#empty-queue')).toBeHidden();
+  await expect(page.locator('#track-title')).toHaveText(track.title);
+  await expect(page.locator('#queue-note')).toBeHidden();
+  await expect.poll(() => page.locator('#audio').evaluate((audio) => audio.duration)).toBeGreaterThan(0);
+  const duration = await page.locator('#audio').evaluate((audio) => audio.duration);
+  expect(Math.abs(duration - track.duration)).toBeLessThan(0.2);
+  await page.locator('#play').click();
+  await expect.poll(() => page.locator('#audio').evaluate((audio) => audio.currentTime)).toBeGreaterThan(0.1);
+  await expect(page.locator('#play')).toHaveAttribute('aria-label', 'Pause');
+  await page.locator('#play').click();
+  await page.locator('#seek').fill('500');
+  await expect.poll(() => page.locator('#audio').evaluate((audio) => audio.currentTime)).toBeCloseTo(duration / 2, 0);
+  await expect(page.locator('#player-error')).toBeHidden();
+  await page.evaluate(() => document.fonts.ready);
+  await page.getByRole('button', { name: 'Pause motion' }).click();
+  await assertNoOverflow(page);
+  await page.screenshot({ path: testInfo.outputPath('release-desktop.png'), fullPage: true });
+  await page.setViewportSize({ width: 390, height: 844 });
+  await assertNoOverflow(page);
+  await page.locator('.deck').screenshot({ path: testInfo.outputPath('release-mobile.png') });
+  await page.setViewportSize({ width: 320, height: 740 });
+  await assertNoOverflow(page);
+  expect(errors).toEqual([]);
 });
