@@ -51,7 +51,7 @@
         <div class="player">
           <div class="player-topline"><span id="player-state" class="eyebrow">STANDBY</span><span class="signal-dot" aria-hidden="true"></span></div>
           <h3 id="track-title">First transmission<br>coming soon.</h3>
-          <p id="track-detail">New music is on its way.</p>
+          <p id="track-detail"></p>
           <div class="waveform-wrap"><canvas id="waveform" aria-hidden="true"></canvas><label class="sr-only" for="seek">Seek</label><input type="range" id="seek" min="0" max="1000" value="0" step="1" disabled aria-valuetext="0:00 of 0:00"></div>
           <div class="time-row"><span id="elapsed">0:00</span><span id="duration">—:—</span></div>
           <div class="controls">
@@ -69,7 +69,7 @@
 
       <div class="queue-heading"><h3>On rotation <span id="track-count">00</span></h3><button id="open-files" class="text-button" type="button">Open an audio file <span aria-hidden="true">↗</span></button><input id="file-input" type="file" accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg,.flac,.opus" multiple hidden></div>
       <ol id="queue" class="track-list" aria-label="Track list"></ol>
-      <div id="empty-queue" class="empty-queue"><span class="empty-mark" aria-hidden="true">↳</span><p>The next transmission starts here.<span>Try the player with your own audio. It stays on your device.</span></p></div>
+      <div id="empty-queue" class="empty-queue"><span class="empty-mark" aria-hidden="true">↳</span><p>Try the player with your own audio.<span>It stays on your device.</span></p></div>
       <p id="queue-note" class="queue-note" hidden>Local listening session · files stay on your device.</p>
       <p class="keyboard-hint">SPACE <span>play / pause</span><i>·</i> ← → <span>seek</span><i>·</i> M <span>mute</span></p>
       <p id="announcement" class="sr-only" role="status" aria-live="polite"></p>

@@ -49,7 +49,7 @@ export function createVisualizer(canvas, waveform, audio) {
     if (!ctx || !width || !height) return;
     ctx.clearRect(0, 0, width, height);
     const small = width < 620;
-    const scale = Math.min(width * (small ? 0.31 : 0.235), height * 0.41);
+    const scale = Math.min(width * (small ? 0.27 : 0.235), height * 0.41);
     const yaw = phase * 0.09 + 0.2;
     const tilt = 0.8 + Math.sin(phase * 0.12) * 0.14;
     const cy = Math.cos(yaw), sy = Math.sin(yaw), ct = Math.cos(tilt), st = Math.sin(tilt);

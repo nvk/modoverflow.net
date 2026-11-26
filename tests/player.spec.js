@@ -24,10 +24,10 @@ async function assertNoOverflow(page) {
 }
 async function catalog(page) {
   await page.route('**/tracks.json', (route) => route.fulfill({ json: [
-    { title: 'Catalog test one', src: 'music/one.wav', detail: 'Test release', duration: 30 },
-    { title: 'Catalog test two', src: 'music/two.wav', duration: 30 },
+    { title: 'Catalog test one', src: 'music/one.wav', detail: 'Test release', duration: 1 },
+    { title: 'Catalog test two', src: 'music/two.wav', duration: 1 },
   ] }));
-  await page.route('**/music/*.wav', (route) => route.fulfill({ contentType: 'audio/wav', body: tone }));
+  await page.route('**/music/*.wav', (route) => route.fulfill({ contentType: 'audio/wav', body: wav(1) }));
 }
 
 test('empty release state, local assets, desktop composition', async ({ page }, testInfo) => {
@@ -93,11 +93,11 @@ test('published catalog, automatic next track and end of queue', async ({ page }
   await page.goto('/');
   await expect(page.locator('#track-title')).toHaveText('Catalog test one');
   await expect(page.locator('#queue-note')).toBeHidden();
+  await expect(page.locator('#duration')).toHaveText('0:01');
   await page.locator('#play').click();
-  await page.locator('#audio').evaluate((audio) => { audio.currentTime = 29.8; });
+  // Let real short recordings finish naturally, without mocked HTTP range seeks.
   await expect(page.locator('#track-title')).toHaveText('Catalog test two');
   await expect(page.locator('#play')).toHaveAttribute('aria-label', 'Pause');
-  await page.locator('#audio').evaluate((audio) => { audio.currentTime = 29.8; });
   await expect(page.locator('#player-state')).toHaveText('END OF QUEUE');
   await expect(page.locator('#play')).toHaveAttribute('aria-label', 'Play');
 });
